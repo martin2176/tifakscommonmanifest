@@ -1,0 +1,18 @@
+# harness.io/skip-file-for-deploy
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: helloworld-ingress
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /hello
+            backend:
+              service:
+                name: helloworld
+                port:
+                  number: 5000
+---
