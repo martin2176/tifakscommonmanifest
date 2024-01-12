@@ -8,7 +8,7 @@ metadata:
     service: "{{.Values.servicename}}"
 spec:
   ports:
-  - port: "{{.Values.port}}"
+  - port: {{.Values.port}}
     name: http
   selector:
     app: "{{.Values.servicename}}"

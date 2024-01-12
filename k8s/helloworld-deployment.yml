@@ -26,5 +26,5 @@ spec:
             memory: "{{.Values.resourcelimits.memrequest}}"
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: "{{.Values.port}}"
+        - containerPort: {{.Values.port}}
 ---
