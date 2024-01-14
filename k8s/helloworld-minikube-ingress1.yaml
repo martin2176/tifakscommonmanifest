@@ -1,0 +1,19 @@
+---
+{{- if .Values.createingress}}  
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: "{{.Values.servicename}}-1"
+spec:
+  rules:
+    - http:
+        paths:
+          - pathType: Prefix
+            path: "{{.Values.path}}"
+            backend:
+              service:
+                name: "{{.Values.servicename}}"
+                port:
+                  number: "{{.Values.port}}"
+{{- end}}
+---
