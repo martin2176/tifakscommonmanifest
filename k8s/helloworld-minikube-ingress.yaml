@@ -14,5 +14,5 @@ spec:
               service:
                 name: "{{.Values.servicename}}"
                 port:
-                  number: "{{.Values.port}}"
+                  number: {{.Values.port}}
 ---
