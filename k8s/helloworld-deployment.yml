@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: "{{.Values.servicename}}"
-        image: {{.Values.imagepath}}:{{.Values.version}}:
+        image: "{{.Values.imagepath}}:{{.Values.version}}"
         resources:
           requests:
             cpu: "{{.Values.resourcelimits.cpurequest}}"
