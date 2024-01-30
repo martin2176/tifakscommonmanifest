@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: <+serviceVariables.azurelocation>
+      location: '<+serviceVariables.azurelocation>'
+      namespace: <+serviceVariables.servicebusnamespace>
+      topic: <+serviceVariables.servicebustopic>
+      subscription: <+serviceVariables.servicebussubscription>
+  tasks:
+    - name: Create a subscription
+      azure_rm_servicebustopicsubscription:
+          name: "{{ subscription }}"
+          topic: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: subs
+    - debug:
+          var: subs
