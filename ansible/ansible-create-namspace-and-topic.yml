@@ -1,10 +1,10 @@
 ---
 - hosts: localhost
   vars:
-      resource_group: harnessngdemo
-      location: 'Central US'
-      namespace: servicebustestns
-      topic: servicebustesttopic
+      resource_group: <+serviceVariables.azurelocation>
+      location: '<+serviceVariables.azurelocation>'
+      namespace: <+serviceVariables.servicebusnamespace>
+      topic: <+serviceVariables.servicebustopic>
   tasks:
     - name: Ensure resource group exist
       azure_rm_resourcegroup:
@@ -22,4 +22,3 @@
       register: topic
     - debug:
           var: topic
----
