@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  vars:
+      resource_group: harnessngdemo
+      location: 'Central US'
+      namespace: servicebustestns
+      topic: servicebustesttopic
+  tasks:
+    - name: Ensure resource group exist
+      azure_rm_resourcegroup:
+          name: "{{ resource_group }}"
+          location: "{{ location }}"
+    - name: Create a namespace
+      azure_rm_servicebus:
+          name: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+    - name: Create a topic
+      azure_rm_servicebustopic:
+          name: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: topic
+    - debug:
+          var: topic
+---
