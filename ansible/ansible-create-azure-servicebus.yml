@@ -24,7 +24,7 @@
          local_action:
           module: copy
           content: "{{ resourcegroupreturndata }}"
-          dest: "/tmp/{{ pipelineexecutionid }}-resourcegroupreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-resourcegroupreturndata"
     - name: Create a namespace
       tags: createnamespace
       block:
@@ -39,7 +39,7 @@
          local_action:
           module: copy
           content: "{{ sbnamespacereturndata }}"
-          dest: "/tmp/{{ pipelineexecutionid }}-sbnamespacereturndata"
+          dest: "/tmp/{{ returndatadirectory }}-sbnamespacereturndata"
     - name: Create a topic
       tags: createtopic
       block:
@@ -54,7 +54,7 @@
          local_action:
           module: copy
           content: "{{ topicreturndata }}"
-          dest: "/tmp/{{ pipelineexecutionid }}-topicreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-topicreturndata"
     - name: Create a subscription
       tags: createsubscription
       block:
@@ -70,4 +70,4 @@
          local_action:
           module: copy
           content: "{{ subscriptionreturndata }}"
-          dest: "/tmp/{{ pipelineexecutionid }}-subscriptionreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-subscriptionreturndata"
