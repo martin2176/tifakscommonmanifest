@@ -1,0 +1,75 @@
+---
+- hosts: localhost
+  ignore_unreachable: true
+  ignore_errors: True
+  vars:
+      resource_group: <+serviceVariables.azureresourcegroup>
+      location: '<+serviceVariables.azurelocation>'
+      sbnamespace: <+serviceVariables.servicebusnamespace>
+      topic: <+serviceVariables.servicebustopic>
+      subscription: <+serviceVariables.servicebussubscription>
+      returndatadirectory: <+pipeline.executionId>
+  tasks:
+    - name: Ensure resource group exist
+      tags: createresourcegroup
+      block:
+       - name: Check for resource group
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroup
+      always:
+       - name: Copy return data to file
+          local_action:
+          module: copy
+          content: "{{ subs }}"
+          dest: /tmp/fileout
+          
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroup
+      
+         
+      
+      azure_rm_resourcegroup:
+          name: "{{ resource_group }}"
+          location: "{{ location }}"
+    - name: Create a namespace
+      tags: createnamespace
+      azure_rm_servicebus:
+          name: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: namespace
+	  ignore_errors: True
+    - debug:
+          var: namespace
+    - name: Create a topic
+      tags: createtopic
+      azure_rm_servicebustopic:
+          name: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: topic
+	  ignore_errors: True
+    - debug:
+          var: topic
+    - name: Create a subscription
+      tags: createsubscription	
+      azure_rm_servicebustopicsubscription:
+          name: "{{ subscription }}"
+          topic: "{{ topic }}"
+          namespace: "{{ namespace }}"
+          resource_group: "{{ resource_group }}"
+      register: subs
+	  ignore_errors: True
+    - debug:
+          var: subscription
+		  
+		  
+    - name: Copy return data to file
+	   tag: copyreturndatatofile
+	   local_action:
+       module: copy
+       content: "{{ subs }}"
+       dest: /tmp/fileout
