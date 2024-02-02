@@ -1,0 +1,80 @@
+---
+- hosts: localhost
+  ignore_unreachable: true
+  ignore_errors: True
+  vars:
+      resource_group: <+serviceVariables.azureresourcegroup>
+      location: '<+serviceVariables.azurelocation>'
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
+      topic: <+serviceVariables.entity>_<+serviceVariables.event>_t_<+serviceVariables.topicversion>
+      subscription: <+serviceVariables.subscription>
+      returndatadirectory: <+pipeline.executionId>
+      sku: <+serviceVariables.sku>
+      state: absent
+  tasks:
+    - name: Ensure resource group exist
+      tags: createresourcegroup
+      block:
+       - name: Check for resource group
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroupreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ resourcegroupreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-resourcegroupreturndata"
+    - name: Create a namespace
+      tags: createnamespace
+      block:
+       - name: Create a namespace
+         azure_rm_servicebus:
+           name: "{{ sbnamespace }}"
+           sku: "{{ sku }}"
+           resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
+         register: sbnamespacereturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ sbnamespacereturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-sbnamespacereturndata"
+    - name: Create a topic
+      tags: createtopic
+      block:
+       - name: Create a topic
+         azure_rm_servicebustopic:
+           name: "{{ topic }}"
+           namespace: "{{ sbnamespace }}"
+           resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
+         register: topicreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ topicreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-topicreturndata"
+    - name: Create a subscription
+      tags: createsubscription
+      block:
+       - name: Create a subscription
+         azure_rm_servicebustopicsubscription:
+           name: "{{ subscription }}"
+           topic: "{{ topic }}"
+           namespace: "{{ sbnamespace }}"
+           resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
+         register: subscriptionreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ subscriptionreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-subscriptionreturndata"
