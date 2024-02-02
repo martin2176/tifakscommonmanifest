@@ -35,6 +35,7 @@
            sku: "{{ sku }}"
            resource_group: "{{ resource_group }}"
            apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
          register: sbnamespacereturndata
       always:
        - name: Copy return data to file
@@ -51,6 +52,7 @@
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
            apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
          register: topicreturndata
       always:
        - name: Copy return data to file
@@ -68,6 +70,7 @@
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
            apiprofile:  "v2017_03_09_profile"
+           state: "{{ state }}"
          register: subscriptionreturndata
       always:
        - name: Copy return data to file
