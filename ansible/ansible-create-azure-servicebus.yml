@@ -10,6 +10,7 @@
       subscription: <+serviceVariables.subscription>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
+      state: present
   tasks:
     - name: Ensure resource group exist
       tags: createresourcegroup
@@ -33,6 +34,7 @@
            name: "{{ sbnamespace }}"
            sku: "{{ sku }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
          register: sbnamespacereturndata
       always:
        - name: Copy return data to file
@@ -48,6 +50,7 @@
            name: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
          register: topicreturndata
       always:
        - name: Copy return data to file
@@ -64,6 +67,7 @@
            topic: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
          register: subscriptionreturndata
       always:
        - name: Copy return data to file
