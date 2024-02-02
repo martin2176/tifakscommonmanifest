@@ -5,9 +5,9 @@
   vars:
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
-      sbnamespace: <+serviceVariables.servicebusnamespace>
-      topic: <+serviceVariables.servicebustopic>
-      subscription: <+serviceVariables.servicebussubscription>
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
+      topic: <+serviceVariables.entity>_<+serviceVariables.event>_t_<+serviceVariables.topicversion>
+      subscription: <+serviceVariables.subscription>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
   tasks:
