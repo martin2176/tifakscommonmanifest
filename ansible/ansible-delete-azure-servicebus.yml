@@ -27,7 +27,7 @@
           content: "{{ resourcegroupreturndata }}"
           dest: "/tmp/{{ returndatadirectory }}-resourcegroupreturndata"
     - name: Create a namespace
-      tags: createnamespace
+      tags: deletenamespace
       block:
        - name: Create a namespace
          azure_rm_servicebus:
@@ -44,7 +44,7 @@
           content: "{{ sbnamespacereturndata }}"
           dest: "/tmp/{{ returndatadirectory }}-sbnamespacereturndata"
     - name: Create a topic
-      tags: createtopic
+      tags: deletetopic
       block:
        - name: Create a topic
          azure_rm_servicebustopic:
@@ -61,7 +61,7 @@
           content: "{{ topicreturndata }}"
           dest: "/tmp/{{ returndatadirectory }}-topicreturndata"
     - name: Create a subscription
-      tags: createsubscription
+      tags: deletesubscription
       block:
        - name: Create a subscription
          azure_rm_servicebustopicsubscription:
