@@ -1,7 +1,6 @@
 ---
 - hosts: localhost
   ignore_unreachable: true
-  ignore_errors: True
   vars:
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
@@ -11,6 +10,7 @@
   tasks:
     - name: Check for namespace
       tags: checknamespace
+      ignore_errors: true
       block:
        - name: Check for namespace
          azure_rm_servicebus_info:
@@ -18,6 +18,9 @@
            resource_group: "{{ resource_group }}"
            type: "namespace"
          register: sbnamespacereturndata
+       - name: Write debug message
+         debug:
+           msg: "{{ sbnamespacereturndata }}"
       always:
        - name: Copy return data to file
          local_action:

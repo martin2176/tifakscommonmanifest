@@ -1,7 +1,6 @@
 ---
 - hosts: localhost
   ignore_unreachable: true
-  ignore_errors: True
   vars:
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
@@ -14,6 +13,7 @@
   tasks:
     - name: Ensure resource group exist
       tags: createresourcegroup
+      ignore_errors: true
       block:
        - name: Check for resource group
          azure_rm_resourcegroup:
@@ -28,6 +28,7 @@
           dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a namespace
       tags: deletenamespace
+      ignore_errors: true
       block:
        - name: Create a namespace
          azure_rm_servicebus:
@@ -44,6 +45,7 @@
           dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a topic
       tags: deletetopic
+      ignore_errors: true
       block:
        - name: Create a topic
          azure_rm_servicebustopic:
@@ -60,6 +62,7 @@
           dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a subscription
       tags: deletesubscription
+      ignore_errors: true
       block:
        - name: Create a subscription
          azure_rm_servicebustopicsubscription:
