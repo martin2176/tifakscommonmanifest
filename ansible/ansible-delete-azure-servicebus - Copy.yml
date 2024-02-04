@@ -10,7 +10,7 @@
       subscription: <+serviceVariables.subscription>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
-      state: present
+      state: absent
   tasks:
     - name: Ensure resource group exist
       tags: createresourcegroup
@@ -25,15 +25,16 @@
          local_action:
           module: copy
           content: "{{ resourcegroupreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-returndata"
+          dest: "/tmp/{{ returndatadirectory }}-resourcegroupreturndata"
     - name: Create a namespace
-      tags: createnamespace
+      tags: deletenamespace
       block:
        - name: Create a namespace
          azure_rm_servicebus:
            name: "{{ sbnamespace }}"
            sku: "{{ sku }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: sbnamespacereturndata
       always:
@@ -41,15 +42,16 @@
          local_action:
           module: copy
           content: "{{ sbnamespacereturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-returndata"
+          dest: "/tmp/{{ returndatadirectory }}-sbnamespacereturndata"
     - name: Create a topic
-      tags: createtopic
+      tags: deletetopic
       block:
        - name: Create a topic
          azure_rm_servicebustopic:
            name: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: topicreturndata
       always:
@@ -57,9 +59,9 @@
          local_action:
           module: copy
           content: "{{ topicreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-returndata"
+          dest: "/tmp/{{ returndatadirectory }}-topicreturndata"
     - name: Create a subscription
-      tags: createsubscription
+      tags: deletesubscription
       block:
        - name: Create a subscription
          azure_rm_servicebustopicsubscription:
@@ -67,6 +69,7 @@
            topic: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
+           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: subscriptionreturndata
       always:
@@ -74,4 +77,4 @@
          local_action:
           module: copy
           content: "{{ subscriptionreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-returndata"
+          dest: "/tmp/{{ returndatadirectory }}-subscriptionreturndata"

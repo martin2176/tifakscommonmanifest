@@ -25,7 +25,7 @@
          local_action:
           module: copy
           content: "{{ resourcegroupreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-resourcegroupreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a namespace
       tags: deletenamespace
       block:
@@ -34,7 +34,6 @@
            name: "{{ sbnamespace }}"
            sku: "{{ sku }}"
            resource_group: "{{ resource_group }}"
-           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: sbnamespacereturndata
       always:
@@ -42,7 +41,7 @@
          local_action:
           module: copy
           content: "{{ sbnamespacereturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-sbnamespacereturndata"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a topic
       tags: deletetopic
       block:
@@ -51,7 +50,6 @@
            name: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
-           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: topicreturndata
       always:
@@ -59,7 +57,7 @@
          local_action:
           module: copy
           content: "{{ topicreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-topicreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
     - name: Create a subscription
       tags: deletesubscription
       block:
@@ -69,7 +67,6 @@
            topic: "{{ topic }}"
            namespace: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
-           apiprofile:  "v2017_03_09_profile"
            state: "{{ state }}"
          register: subscriptionreturndata
       always:
@@ -77,4 +74,4 @@
          local_action:
           module: copy
           content: "{{ subscriptionreturndata }}"
-          dest: "/tmp/{{ returndatadirectory }}-subscriptionreturndata"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
