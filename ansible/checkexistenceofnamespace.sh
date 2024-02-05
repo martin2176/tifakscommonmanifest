@@ -1,5 +1,5 @@
 returndatadirectory=<+pipeline.executionId>
-returndatadirectory=Cic0iOoFQf2vFNp-IKa7GA
+returndatadirectory=oXUT-GA0Q6auU9UL1SIT5w
 
 returndatafile="/tmp/${returndatadirectory}-returndata"
 returndata=`cat "$returndatafile"`
@@ -11,6 +11,7 @@ failed=$( jq -r  '.failed' <<< "${returndata}" )
 if $failed
  then
   echo "ansible playbook failed for reason described in debug message"
+  echo ${returndata}
   exit 1
  else
   echo "ansible playbook completed succesfully"
