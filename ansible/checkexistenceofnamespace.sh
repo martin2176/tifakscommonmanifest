@@ -1,6 +1,4 @@
 returndatadirectory=<+pipeline.executionId>
-returndatadirectory=oXUT-GA0Q6auU9UL1SIT5w
-
 returndatafile="/tmp/${returndatadirectory}-returndata"
 returndata=`cat "$returndatafile"`
 rm -f "$returndatafile"
