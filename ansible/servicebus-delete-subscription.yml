@@ -1,0 +1,46 @@
+---
+- hosts: localhost
+  ignore_unreachable: true
+  vars:
+      resource_group: <+serviceVariables.azureresourcegroup>
+      location: '<+serviceVariables.azurelocation>'
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
+      topic: 
+      subscription: <+serviceVariables.subscription>
+      returndatadirectory: <+pipeline.executionId>
+      sku: <+serviceVariables.sku>
+      state: absent
+  tasks:
+    - name: Ensure resource group exist
+      tags: createresourcegroup
+      ignore_errors: true
+      block:
+       - name: Check for resource group
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroupreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ resourcegroupreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
+    - name: Delete a subscription
+      tags: deletesubscription
+      ignore_errors: true
+      block:
+       - name: Delete a subscription
+         azure_rm_servicebustopicsubscription:
+           name: "{{ subscription }}"
+           topic: "{{ topic }}"
+           namespace: "{{ sbnamespace }}"
+           resource_group: "{{ resource_group }}"
+           state: "{{ state }}"
+         register: subscriptionreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ subscriptionreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
