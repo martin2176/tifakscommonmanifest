@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  ignore_unreachable: true
+  vars:
+      resource_group: <+serviceVariables.azureresourcegroup>
+      location: '<+serviceVariables.azurelocation>'
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+pipeline.variables.servicebussuffix>
+      returndatadirectory: <+pipeline.executionId>
+      sku: <+serviceVariables.sku>
+      state: present
+  tasks:
+    - name: Ensure resource group exist
+      tags: createresourcegroup
+      ignore_errors: true
+      block:
+       - name: Check for resource group
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroupreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ resourcegroupreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
+    - name: Create a namespace
+      tags: createnamespace
+      ignore_errors: true
+      block:
+       - name: Create a namespace
+         azure_rm_servicebus:
+           name: "{{ sbnamespace }}"
+           sku: "{{ sku }}"
+           resource_group: "{{ resource_group }}"
+           state: "{{ state }}"
+         register: sbnamespacereturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ sbnamespacereturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
+    - name: Check for namespace
+      tags: checknamespace
+      ignore_errors: true
+      block:
+       - name: Check for namespace
+         azure_rm_servicebus_info:
+           namespace: "{{ sbnamespace }}"
+           resource_group: "{{ resource_group }}"
+           type: "namespace"
+         register: sbnamespacereturndata
+       - name: Write debug message
+         debug:
+           msg: "{{ sbnamespacereturndata }}"
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ sbnamespacereturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"

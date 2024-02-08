@@ -1,0 +1,43 @@
+---
+- hosts: localhost
+  ignore_unreachable: true
+  vars:
+      resource_group: <+serviceVariables.azureresourcegroup>
+      location: '<+serviceVariables.azurelocation>'
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+pipeline.variables.servicebussuffix>
+      returndatadirectory: <+pipeline.executionId>
+      sku: <+serviceVariables.sku>
+      state: absent
+  tasks:
+    - name: Ensure resource group exist
+      tags: createresourcegroup
+      ignore_errors: true
+      block:
+       - name: Check for resource group
+         azure_rm_resourcegroup:
+           name: "{{ resource_group }}"
+           location: "{{ location }}"
+         register: resourcegroupreturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ resourcegroupreturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
+    - name: Delete a namespace
+      tags: deletenamespace
+      ignore_errors: true
+      block:
+       - name: Delete a namespace
+         azure_rm_servicebus:
+           name: "{{ sbnamespace }}"
+           sku: "{{ sku }}"
+           resource_group: "{{ resource_group }}"
+           state: "{{ state }}"
+         register: sbnamespacereturndata
+      always:
+       - name: Copy return data to file
+         local_action:
+          module: copy
+          content: "{{ sbnamespacereturndata }}"
+          dest: "/tmp/{{ returndatadirectory }}-returndata"
