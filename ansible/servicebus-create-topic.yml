@@ -5,7 +5,7 @@
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
       sbnamespace: <+pipeline.variables.sbnamespace>
-      topic: <+serviceVariables.entity>_<+serviceVariables.event>_t_<+serviceVariables.topicversion>
+      topic: <+pipeline.variables.entity>_<+pipeline.variables.event>_t_<+pipeline.variables.topicversion>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
       state: present
