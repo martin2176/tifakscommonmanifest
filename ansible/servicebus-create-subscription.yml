@@ -5,7 +5,7 @@
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
       sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
-      topic: 
+      topic: <+pipeline.variables.topic>
       subscription: <+serviceVariables.subscription>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
