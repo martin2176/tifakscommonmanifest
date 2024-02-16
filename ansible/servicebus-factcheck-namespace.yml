@@ -4,7 +4,7 @@
   vars:
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
-      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
+      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+pipeline.variables.servicebussuffix>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
   tasks:
