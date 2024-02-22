@@ -14,7 +14,7 @@
       block:
        - name: Check for namespace
          azure_rm_servicebus_info:
-           namespace: "{{ sbnamespace }}"
+           name: "{{ sbnamespace }}"
            resource_group: "{{ resource_group }}"
            type: "namespace"
          register: sbnamespacereturndata
