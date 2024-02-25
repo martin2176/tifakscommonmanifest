@@ -4,9 +4,9 @@
   vars:
       resource_group: <+serviceVariables.azureresourcegroup>
       location: '<+serviceVariables.azurelocation>'
-      sbnamespace: <+serviceVariables.envid>-<+variable.businessunit>-sb-<+serviceVariables.envname>-<+serviceVariables.servicebussuffix>
+      sbnamespace: <+pipeline.variables.sbnamespace>
       topic: <+pipeline.variables.sbnamespace>
-      subscription: <+serviceVariables.subscription>
+      subscription: <+pipeline.variables.subscription>
       returndatadirectory: <+pipeline.executionId>
       sku: <+serviceVariables.sku>
       state: absent
