@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<APIProxy revision="6" name="tif-hello-api">
+<APIProxy revision="6" name="<+service.identifier>">
 	<Basepaths><+serviceVariables.apigeeproxybasepath></Basepaths>
     <ConfigurationVersion majorVersion="4" minorVersion="0"/>
-    <CreatedAt>1693930785686</CreatedAt>
     <CreatedBy>martin2176@yahoo.com</CreatedBy>
     <Description></Description>
-    <DisplayName>tif-hello-api</DisplayName>
-    <LastModifiedAt>1707858322650</LastModifiedAt>
-    <LastModifiedBy>martin2176@yahoo.com</LastModifiedBy>
-    <ManifestVersion>SHA-512:d417c0f815b82daed513dc3dfa76dc5b8d03783437605dd00dd33cd52072a1d5f8fa5fdfed807345003ee8f091f4b1aaa61b88239a399f02beb4ed81ea65da97:us-east-1</ManifestVersion>
+    <DisplayName><+service.identifier>-proxy</DisplayName>
     <Policies>
         <Policy>get-apikey-for-datadog-from-kv</Policy>
         <Policy>log-message-to-datadog</Policy>
