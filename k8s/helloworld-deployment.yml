@@ -22,8 +22,11 @@ spec:
         image: "{{.Values.imagepath}}:{{.Values.version}}"
         resources:
           requests:
-            cpu: "{{.Values.resourcelimits.cpurequest}}"
-            memory: "{{.Values.resourcelimits.memrequest}}"
+            cpu: "{{<+serviceVariables.requests.cpu>}}"
+            memory: "{{<+serviceVariables.requests.memory>}}"
+          limits:
+            cpu: "{{<+serviceVariables.requests.cpu>}}"
+            memory: "{{<+serviceVariables.requests.memory>}}"            
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{.Values.port}}
