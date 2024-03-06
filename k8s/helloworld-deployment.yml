@@ -24,9 +24,6 @@ spec:
           requests:
             cpu: "{{.Values.cpurequest}}"
             memory: "{{.Values.memrequest}}"
-          limits:
-            cpu: "{{.Values.cpurequest}}"
-            memory: "{{.Values.memrequest}}"           
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: {{.Values.port}}
