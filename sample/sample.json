@@ -1,0 +1,5 @@
+{
+  "port": "<+serviceVariables.healthcheckport>",
+  "uri": "<+serviceVariables.healthcheckuri>",
+  "fqdn": "<+serviceVariables.mtlsfqdn>"
+}
