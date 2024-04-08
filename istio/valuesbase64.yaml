@@ -1,0 +1,4 @@
+name: <+pipeline.variables.name>
+namespace: <+infra.namespace>
+tlscrt: "<+secrets.getValue("<+pipeline.variables.tlscertificatecert>")>"
+tlskey: "<+secrets.getValue("<+pipeline.variables.tlscertificatekey>")>"

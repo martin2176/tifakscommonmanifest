@@ -1,0 +1,4 @@
+name: <+pipeline.variables.name>
+namespace: <+infra.namespace>
+tlscrt: <+pipeline.stages.istiotlssecret.spec.execution.steps.Convert_Secret_to_Base64.output.outputVariables.tlscertificatecertbase64>
+tlskey: <+pipeline.stages.istiotlssecret.spec.execution.steps.Convert_Secret_to_Base64.output.outputVariables.tlscertificatekeybase64>
